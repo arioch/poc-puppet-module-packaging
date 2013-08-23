@@ -68,6 +68,20 @@ post_build() {
   [ -d .build ] && rm -rf .build
 }
 
+build_centos() {
+  pre_build
+  fpm -s dir -t rpm \
+    --architecture all \
+    -n puppet-module-${PUPPET_ENVIRONMENT}-${MODULE_NAME} \
+    -v ${MODULE_VERSION} \
+    --license "${MODULE_LICENSE}" \
+    --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
+    --description "${MODULE_DESCRIPTION}" \
+    -C .build \
+    ${MODULE_NAME}
+  post_build
+}
+
 build_squeeze() {
   pre_build
   fpm -s dir -t deb \
@@ -102,4 +116,4 @@ build_debian() {
 }
 
 build_debian
-
+build_centos
