@@ -98,7 +98,7 @@ post_build() {
   [ -d .build ] && rm -rf .build
 }
 
-build_centos() {
+build_rhel() {
   pre_build
   fpm -s dir -t rpm \
     --architecture all \
@@ -147,5 +147,5 @@ build_debian() {
 }
 
 build_debian
-build_centos
+build_rhel
 
