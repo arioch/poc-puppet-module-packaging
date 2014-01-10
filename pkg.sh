@@ -39,7 +39,37 @@ then
       | sed -e "s+\"+'+g" \
       | cut -d "'" -f4
   )
-  FPM_DEPENDS="puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}"
+
+  for DEPENDENCY_NAME in $(
+    grep -i dependency modules/${MODULE}/Modulefile \
+      | sed -e "s+\"+'+g" \
+      | cut -d "'" -f2 \
+      | cut -d '/' -f2
+    )
+  do
+    DEPENDENCY_VERSION=$(grep -iE '^dependency.*\'$DEPENDENCY_NAME modules/${MODULE}/Modulefile \
+      | sed -e "s+\"+'+g" \
+      | cut -d ',' -f2 \
+      | cut -d "'" -f2
+    )
+
+    if [ -n "${DEPENDENCY_VERSION}" ]
+    then
+      if [ -n "${DEPENDENCY_VERSION}" ]
+      then
+        FPM_DEPENDS="${DEPS} --depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}'"
+      else
+        FPM_DEPENDS="--depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}'"
+      fi
+    else
+      if [ -n "${DEPENDENCY_VERSION}" ]
+      then
+        FPM_DEPENDS="${DEPS} --depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}'"
+      else
+        FPM_DEPENDS="--depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}'"
+      fi
+    fi
+  done
 fi
 
 pre_build() {
@@ -77,6 +107,7 @@ build_centos() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
+    ${FPM_DEPENDS} \
     -C .build \
     ${MODULE_NAME}
   post_build
@@ -91,7 +122,7 @@ build_squeeze() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
-    --depends "${FPM_DEPENDS}" \
+    ${FPM_DEPENDS} \
     -C .build ${MODULE_NAME}
   post_build
 }
@@ -105,7 +136,7 @@ build_wheezy() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
-    --depends "${FPM_DEPENDS}" \
+    ${FPM_DEPENDS} \
     -C .build ${MODULE_NAME}
   post_build
 }
@@ -117,3 +148,4 @@ build_debian() {
 
 build_debian
 build_centos
+
