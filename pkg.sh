@@ -103,7 +103,7 @@ build_rhel() {
   fpm -s dir -t rpm \
     --architecture all \
     -n puppet-module-${PUPPET_ENVIRONMENT}-${MODULE_NAME} \
-    -v ${MODULE_VERSION} \
+    -v ${MODULE_VERSION}_${DATE} \
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
