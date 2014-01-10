@@ -1,5 +1,6 @@
 *.deb
 *.lock
+*.rpm
 .build/
 .librarian/
 .tmp/
