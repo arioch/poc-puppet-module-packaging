@@ -107,8 +107,8 @@ build_rhel() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
-    ${FPM_DEPENDS} \
     -C .build \
+    ${FPM_DEPENDS} \
     ${MODULE_NAME}
   post_build
 }
@@ -122,8 +122,9 @@ build_squeeze() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
+    -C .build \
     ${FPM_DEPENDS} \
-    -C .build ${MODULE_NAME}
+    ${MODULE_NAME}
   post_build
 }
 
@@ -136,8 +137,9 @@ build_wheezy() {
     --license "${MODULE_LICENSE}" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
     --description "${MODULE_DESCRIPTION}" \
+    -C .build \
     ${FPM_DEPENDS} \
-    -C .build ${MODULE_NAME}
+    ${MODULE_NAME}
   post_build
 }
 
