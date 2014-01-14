@@ -57,16 +57,16 @@ then
     then
       if [ -n "${DEPENDENCY_VERSION}" ]
       then
-        FPM_DEPENDS="${DEPS} --depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}'"
+        FPM_DEPENDS="${DEPS} --depends \"puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}\""
       else
-        FPM_DEPENDS="--depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}'"
+        FPM_DEPENDS="--depends \"puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME} ${DEPENDENCY_VERSION}\""
       fi
     else
       if [ -n "${DEPENDENCY_VERSION}" ]
       then
-        FPM_DEPENDS="${DEPS} --depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}'"
+        FPM_DEPENDS="${DEPS} --depends \"puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}\""
       else
-        FPM_DEPENDS="--depends 'puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}'"
+        FPM_DEPENDS="--depends \"puppet-module-${PUPPET_ENVIRONMENT}-${DEPENDENCY_NAME}\""
       fi
     fi
   done
@@ -100,46 +100,46 @@ post_build() {
 
 build_rhel() {
   pre_build
-  fpm -s dir -t rpm \
+  eval "fpm -s dir -t rpm \
     --architecture all \
     -n puppet-module-${PUPPET_ENVIRONMENT}-${MODULE_NAME} \
     -v ${MODULE_VERSION}_${DATE} \
-    --license "${MODULE_LICENSE}" \
+    --license \"${MODULE_LICENSE}\" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
-    --description "${MODULE_DESCRIPTION}" \
+    --description \"${MODULE_DESCRIPTION}\" \
     -C .build \
     ${FPM_DEPENDS} \
-    ${MODULE_NAME}
+    ${MODULE_NAME}"
   post_build
 }
 
 build_squeeze() {
   pre_build
-  fpm -s dir -t deb \
+  eval "fpm -s dir -t deb \
     --architecture all \
     -n puppet-module-${PUPPET_ENVIRONMENT}-${MODULE_NAME} \
     -v ${MODULE_VERSION}-${DATE}+squeeze1 \
-    --license "${MODULE_LICENSE}" \
+    --license \"${MODULE_LICENSE}\" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
-    --description "${MODULE_DESCRIPTION}" \
+    --description \"${MODULE_DESCRIPTION}\" \
     -C .build \
     ${FPM_DEPENDS} \
-    ${MODULE_NAME}
+    ${MODULE_NAME}"
   post_build
 }
 
 build_wheezy() {
   pre_build
-  fpm -s dir -t deb \
+  eval "fpm -s dir -t deb \
     --architecture all \
     -n puppet-module-${PUPPET_ENVIRONMENT}-${MODULE_NAME} \
     -v ${MODULE_VERSION}-${DATE}+wheezy1 \
-    --license "${MODULE_LICENSE}" \
+    --license \"${MODULE_LICENSE}\" \
     --prefix /etc/puppet/environments/${PUPPET_ENVIRONMENT} \
-    --description "${MODULE_DESCRIPTION}" \
+    --description \"${MODULE_DESCRIPTION}\" \
     -C .build \
     ${FPM_DEPENDS} \
-    ${MODULE_NAME}
+    ${MODULE_NAME}"
   post_build
 }
 
