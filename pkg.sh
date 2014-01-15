@@ -1,8 +1,8 @@
 #!/bin/sh
 
 DATE=$(date '+%Y%m%d%H%M')
-MODULE=${2:-stdlib}
-PUPPET_ENVIRONMENT=${1:-production}
+MODULE=${1:-stdlib}
+PUPPET_ENVIRONMENT=${2:-production}
 
 MODULE_NAME=$(
   grep -i ^name modules/${MODULE}/Modulefile \
