@@ -1,0 +1,27 @@
+language: ruby
+
+rvm:
+  - 1.8.7
+  - 1.9.3
+  - 2.0.0
+
+script:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y rpm
+  - rm -rf *.deb
+  - rm -rf *.rpm
+  - bundle
+  - bundle exec librarian-puppet install
+  - bundle exec librarian-puppet update
+  - bundle exec sh pkg.sh stdlib
+  - ls puppet-module-production-stdlib*.deb
+  - ls puppet-module-production-stdlib*.rpm
+  - bundle exec sh pkg.sh stdlib development
+  - ls puppet-module-development-stdlib*.deb
+  - ls puppet-module-development-stdlib*.rpm
+
+branches:
+  only:
+    - master
+    - develop
+
